@@ -7,7 +7,7 @@ def receiveAndRespond(socket):
     try:
         data = client_sock.recv(1024)
         print("Data received:", str(data))
-        responseMessage = data
+        responseMessage = data.decode("utf-8")
 
         try:
             testAny = Any()
