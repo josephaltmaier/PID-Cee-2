@@ -7,16 +7,20 @@ def receiveAndRespond(socket):
     try:
         data = client_sock.recv(1024)
         print("Data received:", str(data))
-        testAny = Any()
-        testAny.ParseFromString(data)
-
-        testHW = HelloWorld()
-        testAny.Unpack(testHW)
         responseMessage = data
-        if testHW.message:
-            print("Received proto message:", testHW.message)
-            responseMessage = testHW.message
-        else:
+
+        try:
+            testAny = Any()
+            testAny.ParseFromString(data)
+
+            testHW = HelloWorld()
+            testAny.Unpack(testHW)
+            if testHW.message:
+                print("Received proto message:", testHW.message)
+                responseMessage = testHW.message
+            else:
+                print("Received parsable proto without a message field")
+        except:
             print("Received non-proto message")
 
         responseHW = HelloWorld()
