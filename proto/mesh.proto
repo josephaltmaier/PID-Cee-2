@@ -8,7 +8,7 @@ message NodeReport {
   string node_id = 1;
   google.protobuf.Timestamp time = 2;
   string gps_location = 3;
-  repeated TagReport = 4;
+  repeated TagReport tag_reports = 4;
 }
 
 message TagReport {

@@ -79,5 +79,5 @@ message MeshInfo {
 }
 
 message KnownBeacons {
-//  repeated TagReport = 1; // Can't get imports to work right now but we're pretty far from needing this anyway.
+//  repeated TagReport tag_reports = 1; // Can't get imports to work right now but we're pretty far from needing this anyway.
 }
