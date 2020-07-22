@@ -40,7 +40,7 @@ try:
     while True:
         client_sock, address = server_sock.accept()
         print("Accepted connection from", address)
-        t = threading.Thread(target=receiveAndRespond)
+        t = threading.Thread(target=receiveAndRespond, args=(client_sock,))
         t.setDaemon(True)
         t.start()
 finally:
