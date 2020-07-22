@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+import "google/protobuf/timestamp.proto";
+
+package meshprotos;
+
+message NodeReport {
+  string node_id = 1;
+  google.protobuf.Timestamp time = 2;
+  string gps_location = 3;
+  repeated TagReport = 4;
+}
+
+message TagReport {
+  string tag_id = 1;
+  int32 signal_stringth = 2;
+  int32 tag_state = 3;
+}

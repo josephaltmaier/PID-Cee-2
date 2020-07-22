@@ -1,6 +1,83 @@
 syntax = "proto3";
-package bluetooth;
+
+import "google/protobuf/timestamp.proto";
+//import "proto/mesh.proto";
+
+package bluetoothprotos;
 
 message HelloWorld {
   string message = 1;
+}
+
+message Request {
+  google.protobuf.Timestamp time = 1;
+  string request_id = 2;
+  string debug_info = 3;
+  oneof message {
+    Location location = 4;
+    BluetoothConfig bluetooth_config = 5;
+    GetConfig get_config = 6;
+    GetLog get_log = 7;
+    GetDebug get_debug = 8;
+  }
+}
+
+message Response {
+  google.protobuf.Timestamp time = 1;
+  string request_id = 2;
+  string error = 3;
+  bool succeeded = 4;
+  string debug_info = 5;
+  oneof message {
+    Location location = 6;
+    BluetoothConfig bluetooth_config = 7;
+    Config config = 8;
+    Log log = 9;
+    Debug debug = 10;
+  }
+}
+
+message Location {
+  string gps_location = 1;
+}
+
+message BluetoothConfig {
+  string bluetooth_name = 1;
+}
+
+message GetConfig {
+
+}
+
+message GetLog {
+
+}
+
+message GetDebug {
+
+}
+
+message Config {
+  Location location = 1;
+  BluetoothConfig bluetooth_confg = 2;
+}
+
+message Log {
+  string log = 1;
+}
+
+message Debug {
+  Config config = 1;
+  Log log = 2;
+  MeshInfo mesh_info = 3;
+  KnownBeacons known_beacons = 4;
+}
+
+message MeshInfo {
+  string address = 1;
+  repeated string neighbors = 2;
+}
+
+message KnownBeacons {
+//  repeated TagReport = 1; // Can't get imports to work right now but we're pretty far from needing this anyway.
 }
