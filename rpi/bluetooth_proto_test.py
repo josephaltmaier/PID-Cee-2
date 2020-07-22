@@ -1,7 +1,7 @@
-import bluetooth
 import threading
 from google.protobuf.any_pb2 import Any
-from generated.python.proto.bluetooth_pb2 import HelloWorld
+from rpi.src.generated.proto.bluetooth_pb2 import HelloWorld
+import bluetooth
 
 def receiveAndRespond(socket):
     try:
