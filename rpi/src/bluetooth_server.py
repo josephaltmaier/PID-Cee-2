@@ -46,7 +46,8 @@ def __handle_client_sock(sock):
         response = __make_error_response(e, request.request_id if request else None)
         try:
             __send_response(sock, response)
-        except:
+        except e:
+            print("Failed to send error response due to %s", str(e))
             pass  # Already printed the first exception, this one is of limited value.
     finally:
         sock.close()
