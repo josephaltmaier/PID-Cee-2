@@ -47,9 +47,8 @@ def __handle_client_sock(sock):
         try:
             print("Sending error response")
             __send_response(sock, response)
-        except e:
-            print("Failed to send error response due to %s", str(e))
-            pass  # Already printed the first exception, this one is of limited value.
+        except Exception as innerException:
+            print("Failed to send error response due to %s", str(innerException))
     finally:
         sock.close()
 
