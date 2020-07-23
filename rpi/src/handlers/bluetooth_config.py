@@ -1,6 +1,6 @@
 from rpi.src.generated.proto.bluetooth_pb2 import Response
 
-class BluetoothConfigHandler:
+class SetBluetoothConfigHandler:
     def handle(self, request):
         if not request.bluetooth_config:
             return None

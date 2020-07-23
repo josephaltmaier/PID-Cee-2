@@ -5,20 +5,20 @@ from threading import Lock
 from rpi.src.generated.proto.bluetooth_pb2 import Request, Response
 from google.protobuf.timestamp_pb2 import Timestamp
 
-threadPool = ThreadPoolExecutor(3)
+__threadPool = ThreadPoolExecutor(3)
 
-listenerLock = Lock()
-handlers = []
+__listenerLock = Lock()
+__handlers = []
 
-oneMB = 1 << 20
-shortMB = 1000000
+__oneMB = 1 << 20
+__maxErrorSize = 1000000
 
-timeout = 5000  # I think timeout is in milliseconds
+__timeout = 5000  # I think timeout is in milliseconds
 
 
 def addHandler(listenerFunc):
-    with listenerLock:
-        handlers .append(listenerFunc)
+    with __listenerLock:
+        __handlers .append(listenerFunc)
 
 
 def start(port):
@@ -30,7 +30,7 @@ def start(port):
         while True:
             client_sock, address = server_sock.accept()
             print("Accepted connection from", address)
-            threadPool.submit(__handle_client_sock, client_sock)
+            __threadPool.submit(__handle_client_sock, client_sock)
     finally:
         server_sock.close()
 
@@ -58,22 +58,22 @@ def __make_error_response(e, request_id):
     response.time = Timestamp().GetCurrentTime()
     response.succeeded = False
     response.error = str(e)
-    # shortMB leaves ~48k for overhead.  This error message shouldn't be anywhere near 1MB anyway.
-    if len(response.error) > shortMB:
-        response.error = response.error[:shortMB]
+    # __maxErrorSize leaves ~48k for overhead.  This error message shouldn't be anywhere near 1MB anyway.
+    if len(response.error) > __maxErrorSize:
+        response.error = response.error[:__maxErrorSize]
     return response
 
 
 def __get_request(sock):
-    sock.settimeout(timeout)
-    messageBytes = sock.recv(oneMB)
+    sock.settimeout(__timeout)
+    messageBytes = sock.recv(__oneMB)
     request = Request()
     request.ParseFromString(messageBytes)
     return request
 
 
 def __handle_request(request):
-    for handler in handlers:
+    for handler in __handlers:
         response = handler.handle(request)
         if not response:
             continue
@@ -86,7 +86,7 @@ def __handle_request(request):
 
 def __send_response(sock, response):
     responseBytes = response.SerializeToString()
-    if len(responseBytes) > oneMB:
+    if len(responseBytes) > __oneMB:
         e = ValueError("response too long, %s bytes", (len(responseBytes)))
         response = __make_error_response(e, response.request_id)
         responseBytes = response.SerializeToString()
