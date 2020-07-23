@@ -1,9 +1,11 @@
-from rpi.src.generated.proto.bluetooth_pb2 import Response
+from rpi.src.generated.proto.bluetooth_pb2 import Response, LOG
 import rpi.src.handlers.util as util
 
 class GetLogHandler:
     def handle(self, request):
-        if not request.get_log:
+        if not request.getter:
+            return None
+        if request.getter != LOG:
             return None
 
         log = util.getLog()

@@ -9,32 +9,44 @@ message HelloWorld {
   string message = 1;
 }
 
+enum Getter {
+  CONFIG = 0;
+  LOG = 1;
+  DEBUG = 2;
+}
+
 message Request {
-  google.protobuf.Timestamp time = 1;
-  string request_id = 2;
-  string debug_info = 3;
+  RequestContext request_context = 1;
   oneof message {
-    Location location = 4;
-    BluetoothConfig bluetooth_config = 5;
-    GetConfig get_config = 6;
-    GetLog get_log = 7;
-    GetDebug get_debug = 8;
+    Location location = 2;
+    BluetoothConfig bluetooth_config = 3;
+    Getter getter = 4;
   }
 }
 
 message Response {
+  ResponseContext response_context = 1;
+  oneof message {
+    Location location = 2;
+    BluetoothConfig bluetooth_config = 3;
+    Config config = 4;
+    Log log = 5;
+    Debug debug = 6;
+  }
+}
+
+message RequestContext {
+  google.protobuf.Timestamp time = 1;
+  string request_id = 2;
+  string debug_info = 3;
+}
+
+message ResponseContext {
   google.protobuf.Timestamp time = 1;
   string request_id = 2;
   string error = 3;
   bool succeeded = 4;
   string debug_info = 5;
-  oneof message {
-    Location location = 6;
-    BluetoothConfig bluetooth_config = 7;
-    Config config = 8;
-    Log log = 9;
-    Debug debug = 10;
-  }
 }
 
 message Location {
@@ -43,18 +55,6 @@ message Location {
 
 message BluetoothConfig {
   string bluetooth_name = 1;
-}
-
-message GetConfig {
-
-}
-
-message GetLog {
-
-}
-
-message GetDebug {
-
 }
 
 message Config {
@@ -79,5 +79,5 @@ message MeshInfo {
 }
 
 message KnownBeacons {
-//  repeated TagReport tag_reports = 1; // Can't get imports to work right now but we're pretty far from needing this anyway.
+  //  repeated TagReport tag_reports = 1; // Can't get imports to work right now but we're pretty far from needing this anyway.
 }

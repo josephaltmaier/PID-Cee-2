@@ -1,9 +1,11 @@
-from rpi.src.generated.proto.bluetooth_pb2 import Response, Debug
+from rpi.src.generated.proto.bluetooth_pb2 import Response, Debug, DEBUG
 import rpi.src.handlers.util as util
 
 class GetDebugHandler:
     def handle(self, request):
-        if not request.get_debug:
+        if not request.getter:
+            return None
+        if request.getter != DEBUG:
             return None
 
         debug = Debug()
