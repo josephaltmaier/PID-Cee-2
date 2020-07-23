@@ -8,7 +8,7 @@ from google.protobuf.timestamp_pb2 import Timestamp
 threadPool = ThreadPoolExecutor(3)
 
 listenerLock = Lock()
-listeners = {}
+listeners = []
 
 oneMB = 1 << 20
 shortMB = 1000000
@@ -16,13 +16,9 @@ shortMB = 1000000
 timeout = 5000  # I think timeout is in milliseconds
 
 
-def addListeners(messageType, listenerFuncs):
+def addListener(listenerFunc):
     with listenerLock:
-        listenerLock.acquire()
-        if not messageType in listeners:
-            listeners[messageType] = listenerFuncs
-            return
-        listeners[messageType].append(listenerFuncs)
+        listeners .append(listenerFunc)
 
 
 def start(port):
