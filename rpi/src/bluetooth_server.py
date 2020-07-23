@@ -45,6 +45,7 @@ def __handle_client_sock(sock):
         traceback.print_exc()
         response = __make_error_response(e, request.request_id if request else None)
         try:
+            print("Sending error response")
             __send_response(sock, response)
         except e:
             print("Failed to send error response due to %s", str(e))
