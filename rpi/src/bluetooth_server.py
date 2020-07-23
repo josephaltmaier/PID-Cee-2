@@ -8,7 +8,7 @@ from google.protobuf.timestamp_pb2 import Timestamp
 threadPool = ThreadPoolExecutor(3)
 
 listenerLock = Lock()
-listeners = []
+handlers = []
 
 oneMB = 1 << 20
 shortMB = 1000000
@@ -16,9 +16,9 @@ shortMB = 1000000
 timeout = 5000  # I think timeout is in milliseconds
 
 
-def addListener(listenerFunc):
+def addHandler(listenerFunc):
     with listenerLock:
-        listeners .append(listenerFunc)
+        handlers .append(listenerFunc)
 
 
 def start(port):
@@ -73,8 +73,15 @@ def __get_request(sock):
 
 
 def __handle_request(request):
-    # TODO: Handle requests!
-    return None
+    for handler in handlers:
+        response = handler.handle(request)
+        if not response:
+            continue
+        response.time = Timestamp().GetCurrentTime()
+        response.request_id = request.request_id
+        response.succeeded = True
+        return response # One handler per request, first handler to respond wins
+    raise ValueError("No handler for request")
 
 
 def __send_response(sock, response):
