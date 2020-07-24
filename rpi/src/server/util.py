@@ -7,7 +7,8 @@ MAX_ERROR_SIZE = 1000000
 
 def make_error_response(e, request_id):
     response = Response()
-    response.response_context.request_id = request_id
+    if request_id:
+        response.response_context.request_id = request_id
     response.response_context.time.GetCurrentTime()
     response.response_context.succeeded = False
     response.response_context.error = str(e)
