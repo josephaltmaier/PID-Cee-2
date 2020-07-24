@@ -39,6 +39,7 @@ def __handle_client_sock(sock):
         response = __handle_request(request)
         __send_response(sock, response)
     except Exception as e:
+        print("Do we even do the handler?")
         traceback.print_exc()
         response = util.make_error_response(e, request.request_context.request_id if request else None)
         try:
