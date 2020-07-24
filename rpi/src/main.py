@@ -31,6 +31,7 @@ def __start_bluetooth_api():
     bluetooth_server.addHandler(location.SetLocationHandler())
     apiThread = threading.Thread(target=bluetooth_server.start, args=[PORT, ])
     apiThread.setDaemon(True)
+    apiThread.start()
     return apiThread
 
 
@@ -38,6 +39,8 @@ def __start_reporter():
     # TODO: store and reuse the ID, get a real master address and filter func
     fakeNodeID = uuid.uuid4()
     reporterThread = threading.Thread(target=reporter.start, args=[fakeNodeID, "fakeIP", "fakePort", ])
+    reporterThread.setDaemon(True)
+    reporterThread.start()
     return reporterThread
 
 
