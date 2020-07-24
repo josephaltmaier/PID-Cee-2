@@ -13,6 +13,10 @@ message NodeReport {
 
 message TagReport {
   string tag_id = 1;
-  int32 signal_stringth = 2;
-  int32 tag_state = 3;
+  string major = 2;
+  string minor = 3;
+  string power = 4; // manufacturers expected signal strength at a range of 1 meter
+  int32 rssi = 5; // actual received signal strength
+  string address = 6;
+  int32 tag_state = 7;
 }
