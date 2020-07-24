@@ -1,8 +1,9 @@
 import bluetooth
 import traceback
+import rpi.src.bluetooth.util as util
 from concurrent.futures import ThreadPoolExecutor
 from threading import Lock
-from rpi.src.generated.proto.bluetooth_pb2 import Request, Response, ResponseContext
+from rpi.src.generated.proto.bluetooth_pb2 import Request
 from google.protobuf.timestamp_pb2 import Timestamp
 
 __threadPool = ThreadPoolExecutor(3)
@@ -10,15 +11,12 @@ __threadPool = ThreadPoolExecutor(3)
 __listenerLock = Lock()
 __handlers = []
 
-__oneMB = 1 << 20
-__maxErrorSize = 1000000
-
 __timeout = 5000  # I think timeout is in milliseconds
 
 
 def addHandler(listenerFunc):
     with __listenerLock:
-        __handlers .append(listenerFunc)
+        __handlers.append(listenerFunc)
 
 
 def start(port):
@@ -43,7 +41,7 @@ def __handle_client_sock(sock):
         __send_response(sock, response)
     except Exception as e:
         traceback.print_exc()
-        response = __make_error_response(e, request.request_context.request_id if request else None)
+        response = util.make_error_response(e, request.request_context.request_id if request else None)
         try:
             print("Sending error response")
             __send_response(sock, response)
@@ -53,22 +51,9 @@ def __handle_client_sock(sock):
         sock.close()
 
 
-def __make_error_response(e, request_id):
-    response = Response()
-    response.response_context = ResponseContext()
-    response.response_context.request_id = request_id
-    response.response_context.time = Timestamp().GetCurrentTime()
-    response.response_context.succeeded = False
-    response.response_context.error = str(e)
-    # __maxErrorSize leaves ~48k for overhead.  This error message shouldn't be anywhere near 1MB anyway.
-    if len(response.response_context.error) > __maxErrorSize:
-        response.response_context.error = response.response_context.error[:__maxErrorSize]
-    return response
-
-
 def __get_request(sock):
     sock.settimeout(__timeout)
-    messageBytes = sock.recv(__oneMB)
+    messageBytes = sock.recv(util.ONE_MB)
     request = Request()
     request.ParseFromString(messageBytes)
     return request
@@ -79,18 +64,17 @@ def __handle_request(request):
         response = handler.handle(request)
         if not response:
             continue
-        response.response_context = ResponseContext()
         response.response_context.time = Timestamp().GetCurrentTime()
         response.response_context.request_id = request.request_context.request_id
         response.response_context.succeeded = True
-        return response # One handler per request, first handler to respond wins
+        return response  # One handler per request, first handler to respond wins
     raise ValueError("No handler for request")
 
 
 def __send_response(sock, response):
     responseBytes = response.SerializeToString()
-    if len(responseBytes) > __oneMB:
+    if len(responseBytes) > util.ONE_MB:
         e = ValueError("response too long, %s bytes", (len(responseBytes)))
-        response = __make_error_response(e, response.response_context.request_id)
+        response = util.make_error_response(e, response.response_context.request_id)
         responseBytes = response.SerializeToString()
     sock.send(responseBytes)
