@@ -1,10 +1,9 @@
 import bluetooth
 import traceback
-import rpi.src.bluetooth.util as util
+import rpi.src.server.util as util
 from concurrent.futures import ThreadPoolExecutor
 from threading import Lock
 from rpi.src.generated.proto.bluetooth_pb2 import Request
-from google.protobuf.timestamp_pb2 import Timestamp
 
 __threadPool = ThreadPoolExecutor(3)
 

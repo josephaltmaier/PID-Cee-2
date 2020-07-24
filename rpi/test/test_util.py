@@ -1,5 +1,5 @@
 import unittest
-import rpi.src.bluetooth.util as util
+import rpi.src.server.util as util
 
 
 class TestBluetoothServer(unittest.TestCase):

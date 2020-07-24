@@ -1,4 +1,4 @@
-import rpi.src.bluetooth.bluetooth_server as bluetooth_server
+import rpi.src.server.bluetooth_server as bluetooth_server
 from rpi.src.handlers import bluetooth_config, get_debug, get_log, get_config, location
 
 PORT = 0x24067
