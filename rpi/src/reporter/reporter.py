@@ -5,7 +5,8 @@ import rpi.src.reporter.scanner as scanner
 import rpi.src.reporter.util as util
 from rpi.src.generated.proto.mesh_pb2 import NodeReport
 
-def start(id, masterAddress, masterPort, filter):
+
+def start(id, master_address, master_port, filter_func=None):
     while True:
         time.sleep(10)
         s = None
@@ -14,7 +15,7 @@ def start(id, masterAddress, masterPort, filter):
             if gpsLocation is None:
                 continue
 
-            tagReports = scanner.scan(filter)
+            tagReports = scanner.scan(filter_func)
             print("Detected %s ble devices", len(tagReports))
             print(tagReports)
             if len(tagReports) == 0:
@@ -27,7 +28,7 @@ def start(id, masterAddress, masterPort, filter):
             nodeReport.tag_reports = tagReports
             reportBytes = nodeReport.SerializeToString()
             s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            s.connect((masterAddress, masterPort))
+            s.connect((master_address, master_port))
             # network is in big endian byte order
             networkOrderMessageLen = (len(reportBytes)).to_bytes(4, byteorder='big')
             s.sendall(networkOrderMessageLen)
