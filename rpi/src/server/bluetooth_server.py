@@ -58,15 +58,16 @@ def __get_request(sock):
 
 
 def __handle_request(request):
-    for handler in __handlers:
-        response = handler.handle(request)
-        if not response:
-            continue
-        response.response_context.time.GetCurrentTime()
-        response.response_context.request_id = request.request_context.request_id
-        response.response_context.succeeded = True
-        return response  # One handler per request, first handler to respond wins
-    raise ValueError("No handler for request")
+    with __listenerLock:
+        for handler in __handlers:
+            response = handler.handle(request)
+            if not response:
+                continue
+            response.response_context.time.GetCurrentTime()
+            response.response_context.request_id = request.request_context.request_id
+            response.response_context.succeeded = True
+            return response  # One handler per request, first handler to respond wins
+        raise ValueError("No handler for request")
 
 
 def __send_response(sock, response):
