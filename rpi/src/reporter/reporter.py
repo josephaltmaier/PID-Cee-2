@@ -13,14 +13,17 @@ def start(id, master_address, master_port, filter_func=None):
         try:
             gpsLocation = util.get_gps_location()
             if gpsLocation is None:
+                print("GPS location not set, sleeping")
                 continue
 
             tagReports = scanner.scan(filter_func)
             print("Detected %s ble devices", len(tagReports))
             print(tagReports)
             if len(tagReports) == 0:
+                print("No ble devices detected, sleeping")
                 continue
 
+            print("Detected %d ble devices", len(tagReports))
             nodeReport = NodeReport()
             nodeReport.node_id = id
             nodeReport.time.GetCurrentTime()
