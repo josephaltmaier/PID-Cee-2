@@ -64,7 +64,7 @@ def __handle_request(request):
         response = handler.handle(request)
         if not response:
             continue
-        response.response_context.time = Timestamp().GetCurrentTime()
+        response.response_context.time.GetCurrentTime()
         response.response_context.request_id = request.request_context.request_id
         response.response_context.succeeded = True
         return response  # One handler per request, first handler to respond wins
