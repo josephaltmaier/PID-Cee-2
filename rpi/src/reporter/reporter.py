@@ -24,7 +24,7 @@ def start(id, master_address, master_port, filter_func=None):
 
             print("Detected %d ble devices", len(tagReports))
             nodeReport = NodeReport()
-            nodeReport.node_id = id
+            nodeReport.node_id = str(id)
             nodeReport.time.GetCurrentTime()
             nodeReport.gps_location = gpsLocation
             nodeReport.tag_reports = tagReports
