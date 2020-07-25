@@ -60,7 +60,7 @@ def __get_id():
             nodeID = f.read()
     except FileNotFoundError:
         with open("node_id", "w") as f:
-            nodeID = uuid.uuid4()
+            nodeID = str(uuid.uuid4())
             f.write(nodeID)
 
     return nodeID
