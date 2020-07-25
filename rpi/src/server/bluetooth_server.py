@@ -50,7 +50,8 @@ def __handle_client_sock(sock):
 
 
 def __get_request(sock):
-    sock.settimeout(__timeout)
+    sock.settimeout(
+        __timeout)  # This timeout doesn't do anything.  The socket read will block indefinitely.  Also pybluez is unmaintained.  Coincidence?
     messageBytes = sock.recv(util.ONE_MB)
     request = Request()
     request.ParseFromString(messageBytes)
