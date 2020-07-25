@@ -1,5 +1,5 @@
 from rpi.src.generated.proto.bluetooth_pb2 import Response
-import rpi.src.handlers.util as util
+import rpi.src.server.handlers.util as util
 
 class SetLocationHandler:
     def handle(self, request):

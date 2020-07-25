@@ -1,11 +1,19 @@
 import time
+import rpi.src.server.handlers.util as handlerutil
 
-__gps_last_load_time = 0 # initialize to 0 so we reload when we start up
+__gps_last_load_time = 0  # initialize to 0 so we reload when we start up
 __gps_location = None
-__gps_reload_duration = 300 # 5 minutes
+__gps_reload_duration = 300  # 5 minutes
+
 
 def __load_gps_location():
-    return "Joseph Rules"
+    try:
+        with open(handlerutil.GPS_LOCATION, "r") as f:
+            location = f.read()
+            return location
+    except FileNotFoundError:
+        return None
+
 
 def get_gps_location():
     global __gps_location

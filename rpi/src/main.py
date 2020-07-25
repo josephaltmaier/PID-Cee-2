@@ -3,7 +3,7 @@ import uuid
 import time
 import rpi.src.server.bluetooth_server as bluetooth_server
 import rpi.src.reporter.reporter as reporter
-from rpi.src.handlers import bluetooth_config, get_debug, get_log, get_config, location
+from rpi.src.server.handlers import get_debug, get_config, location, bluetooth_config, get_log
 
 PORT = 0x24067
 

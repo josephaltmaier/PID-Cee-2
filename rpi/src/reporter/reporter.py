@@ -22,7 +22,6 @@ def start(id, master_address, master_port, filter_func=None):
                 print("No ble devices detected, sleeping")
                 continue
 
-            print("Detected %d ble devices", len(tagReports))
             nodeReport = NodeReport()
             nodeReport.node_id = str(id)
             nodeReport.time.GetCurrentTime()
