@@ -27,7 +27,7 @@ def start(id, master_address, master_port, filter_func=None):
             nodeReport.node_id = str(id)
             nodeReport.time.GetCurrentTime()
             nodeReport.gps_location = gpsLocation
-            nodeReport.tag_reports = tagReports
+            nodeReport.tag_reports.extend(tagReports)
             reportBytes = nodeReport.SerializeToString()
             s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             s.connect((master_address, master_port))
