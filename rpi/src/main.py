@@ -8,7 +8,7 @@ from rpi.src.handlers import bluetooth_config, get_debug, get_log, get_config, l
 PORT = 0x24067
 
 
-def main():
+def main(): # TODO: Run these as processes and restart them when they fail
     apiThread = __start_bluetooth_api()
     reporterThread = __start_reporter()
 

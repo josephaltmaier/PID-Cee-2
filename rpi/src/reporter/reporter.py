@@ -1,6 +1,5 @@
 import socket
 import time
-import sys
 import rpi.src.reporter.scanner as scanner
 import rpi.src.reporter.util as util
 from rpi.src.generated.proto.mesh_pb2 import NodeReport
