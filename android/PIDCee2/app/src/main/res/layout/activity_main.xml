@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+    <LinearLayout
+        android:id="@+id/button_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/start_scan_button"
+            android:text="Start Scan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:id="@+id/stop_scan_button"
+            android:text="Stop Scan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:enabled="false" />
+
+        <Button
+            android:id="@+id/read_rssi"
+            android:text="Read Rssi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:enabled="false" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/display_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Hello World!"
+        android:gravity="start|top" />
+
+    <ListView
+        android:id="@+id/device_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+</LinearLayout>
