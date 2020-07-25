@@ -24,7 +24,7 @@ def start():
 
 def setIpAddr(sock, iface, ip):
     bin_ip = socket.inet_aton(ip)
-    ifreq = struct.pack(b'16sH2s4s8s', iface, socket.AF_INET, '\x00' * 2, bin_ip, '\x00' * 8)
+    ifreq = struct.pack('16sH2s4s8s', bytes(iface, "utf-8"), socket.AF_INET, bytes('\x00' * 2, "utf-8"), bin_ip, bytes('\x00' * 8, "utf-8"))
     fcntl.ioctl(sock, SIOCSIFADDR, ifreq)
 
 
