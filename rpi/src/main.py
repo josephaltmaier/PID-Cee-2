@@ -1,19 +1,25 @@
 import threading
 import uuid
 import time
+import argparse
 import rpi.src.server.bluetooth_server as bluetooth_server
 import rpi.src.reporter.reporter as reporter
+import rpi.src.master.master_server as master
 from rpi.src.server.handlers import get_debug, get_config, location, bluetooth_config, get_log
 
 API_PORT = 24067
-MASTER_PORT = 17403
-# Mesh network has no built in DNS so hard-code the master IP address for now.
-MASTER_ADDRESS = "192.168.0.69"
 
 
-def main(): # TODO: Run these as processes and restart them when they fail
+def main():  # TODO: Run these as processes and restart them when they fail
+    parser = argparse.ArgumentParser(description='Run the PID-Cee-2 node.')
+    parser.add_argument('--run_master', dest="run_master", default=False, help='when set to true this node will run a master thread')
+    args = parser.parse_args()
+
     apiThread = __start_bluetooth_api()
     reporterThread = __start_reporter()
+    masterThread = None
+    if args.run_master:
+        masterThread = __start_master()
 
     while True:
         # make sure the threads are running every minute
@@ -23,6 +29,9 @@ def main(): # TODO: Run these as processes and restart them when they fail
             return
         if not reporterThread.is_alive():
             print("Reporter thread has died, shutting down the node")
+            return
+        if args.run_master and not masterThread.is_alive():
+            print("Master thread has died, shutting down the node")
             return
 
 
@@ -39,7 +48,7 @@ def __start_bluetooth_api():
 
 
 def __start_reporter():
-    reporterThread = threading.Thread(target=reporter.start, args=[__get_id(), MASTER_ADDRESS, MASTER_PORT, ])
+    reporterThread = threading.Thread(target=reporter.start, args=[__get_id(), master.MASTER_ADDRESS, master.MASTER_PORT, ])
     reporterThread.setDaemon(True)
     reporterThread.start()
     return reporterThread
@@ -55,6 +64,10 @@ def __get_id():
             f.write(nodeID)
 
     return nodeID
+
+
+def __start_master():
+    pass
 
 
 if __name__ == "__main__":
