@@ -43,6 +43,7 @@ def __set_ip_addr(sock, iface, ip):
 def __handle_client_sock(sock):
     sock.settimeout(TIMEOUT)
 
+    print("Waiting for size from client")
     sizeBytes = __get_exact_bytes(sock, 4)
     messageSize = int.from_bytes(sizeBytes, "big")  # bytes from the network should always be big endian
     print("receiving a message of %d bytes", (messageSize))
@@ -60,7 +61,9 @@ def __get_exact_bytes(sock, numBytes):
         if time.time() - startTime > 5:
             raise TimeoutError("Timeout exceeded waiting for data")
         numBytesToGet = numBytes - len(receivedBytes)
+        print("Getting %d bytes", (numBytesToGet))
         moreBytes = sock.recv(numBytesToGet)
+        print("Got %d bytes", (len(moreBytes)))
         receivedBytes = receivedBytes + moreBytes
     if len(receivedBytes) != numBytes:
         raise ValueError("We should have exactly %d bytes for message size.  Instead read %d bytes",
