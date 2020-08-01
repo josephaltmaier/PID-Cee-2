@@ -2,6 +2,7 @@ import socket
 import struct
 import fcntl
 import time
+import traceback
 from rpi.src.generated.proto.mesh_pb2 import NodeReport
 from concurrent.futures import ThreadPoolExecutor
 
@@ -41,17 +42,22 @@ def __set_ip_addr(sock, iface, ip):
 
 
 def __handle_client_sock(sock):
-    sock.settimeout(TIMEOUT)
+    try:
+        sock.settimeout(TIMEOUT)
 
-    print("Waiting for size from client")
-    sizeBytes = __get_exact_bytes(sock, 4)
-    messageSize = int.from_bytes(sizeBytes, "big")  # bytes from the network should always be big endian
-    print("receiving a message of %d bytes", (messageSize))
+        print("Waiting for size from client")
+        sizeBytes = __get_exact_bytes(sock, 4)
+        messageSize = int.from_bytes(sizeBytes, "big")  # bytes from the network should always be big endian
+        print("receiving a message of %d bytes", (messageSize))
 
-    messageBytes = __get_exact_bytes(sock, messageSize)
-    message = NodeReport()
-    message.ParseFromString(messageBytes)
-    print(message)
+        messageBytes = __get_exact_bytes(sock, messageSize)
+        message = NodeReport()
+        message.ParseFromString(messageBytes)
+        print(message)
+    except:
+        traceback.print_exc()
+    finally:
+        sock.close()
 
 
 def __get_exact_bytes(sock, numBytes):
