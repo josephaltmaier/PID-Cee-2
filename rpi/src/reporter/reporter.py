@@ -18,7 +18,7 @@ def start(id, master_address, master_port, filter_func=None):
                 continue
 
             tagReports = scanner.scan(filter_func)
-            print("Detected %s ble devices", len(tagReports))
+            print("Detected %s ble devices" % len(tagReports))
             print(tagReports)
             if len(tagReports) == 0:
                 print("No ble devices detected, sleeping")

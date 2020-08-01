@@ -10,7 +10,7 @@ class ProtoChannel():
         print("Waiting for size from client")
         sizeBytes = self.__get_exact_bytes(4)
         messageSize = int.from_bytes(sizeBytes, "big")  # bytes from the network should always be big endian
-        print("receiving a message of %d bytes", messageSize)
+        print("receiving a message of %d bytes" % messageSize)
 
         return self.__get_exact_bytes(messageSize)
 
@@ -32,10 +32,10 @@ class ProtoChannel():
                 raise TimeoutError("Timeout exceeded waiting for data")
 
             numBytesToGet = numBytes - len(receivedBytes)
-            print("Getting %d bytes", (numBytesToGet))
+            print("Getting %d bytes" % (numBytesToGet))
             moreBytes = self.sock.recv(numBytesToGet)
 
-            print("Got %d bytes", (len(moreBytes)))
+            print("Got %d bytes" % (len(moreBytes)))
             receivedBytes = receivedBytes + moreBytes
         if len(receivedBytes) != numBytes:
             raise ValueError("We should have exactly %d bytes for message size.  Instead read %d bytes",

@@ -26,7 +26,7 @@ def start(port):
     try:
         while True:
             client_sock, address = server_sock.accept()
-            print("Accepted connection from", address)
+            print("Accepted connection from %s" % address)
             __threadPool.submit(__handle_client_sock, client_sock)
     finally:
         server_sock.close()
