@@ -1,5 +1,6 @@
 import socket
 import time
+import traceback
 import rpi.src.reporter.scanner as scanner
 import rpi.src.reporter.util as util
 from rpi.src.generated.proto.mesh_pb2 import NodeReport
@@ -38,6 +39,8 @@ def start(id, master_address, master_port, filter_func=None):
             s.sendall(reportBytes)
         except ConnectionRefusedError:
             print("Could not connect to master")
+        except:
+            traceback.print_exc()
         finally:
             if s:
                 s.close()
