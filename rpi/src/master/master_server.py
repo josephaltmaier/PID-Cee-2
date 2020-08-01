@@ -62,7 +62,7 @@ def __handle_client_sock(sock):
 
 def __get_exact_bytes(sock, numBytes):
     startTime = time.time()
-    receivedBytes = []
+    receivedBytes = bytearray()
     while len(receivedBytes) < numBytes:
         if time.time() - startTime > 5:
             raise TimeoutError("Timeout exceeded waiting for data")
