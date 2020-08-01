@@ -31,7 +31,7 @@ def start(id, master_address, master_port, filter_func=None):
             reportBytes = nodeReport.SerializeToString()
             s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             ipaddress = sharedUtil.get_ip_address("bat0")
-            s.bind(ipaddress)
+            s.bind((ipaddress, 0))
             s.connect((master_address, master_port))
             # network is in big endian byte order
             networkOrderMessageLen = (len(reportBytes)).to_bytes(4, byteorder='big')
