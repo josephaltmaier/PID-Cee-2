@@ -1,0 +1,4 @@
+include ':app'
+include ':protoLib'
+project(':protoLib').projectDir = new File(settingsDir, '../../proto')
+rootProject.name = "PID-Cee-2"
