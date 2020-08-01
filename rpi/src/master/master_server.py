@@ -2,7 +2,6 @@ import socket
 import struct
 import fcntl
 import time
-import rpi.src.shared.util as util
 from rpi.src.generated.proto.mesh_pb2 import NodeReport
 from concurrent.futures import ThreadPoolExecutor
 
