@@ -34,6 +34,8 @@ def start(id, master_address, master_port, filter_func=None):
             networkOrderMessageLen = (len(reportBytes)).to_bytes(4, byteorder='big')
             s.sendall(networkOrderMessageLen)
             s.sendall(reportBytes)
+        except ConnectionRefusedError:
+            print("Could not connect to master")
         finally:
             if s:
                 s.close()
