@@ -4,6 +4,7 @@ import traceback
 import rpi.src.reporter.scanner as scanner
 import rpi.src.reporter.util as util
 from rpi.src.generated.proto.mesh_pb2 import NodeReport
+from rpi.src.channel.proto_channel import ProtoChannel
 
 
 def start(id, master_address, master_port, filter_func=None):
@@ -28,15 +29,15 @@ def start(id, master_address, master_port, filter_func=None):
             nodeReport.time.GetCurrentTime()
             nodeReport.gps_location = gpsLocation
             nodeReport.tag_reports.extend(tagReports)
+
             reportBytes = nodeReport.SerializeToString()
             s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            #  TODO: This behavior should be encapsulated in the channel
             ipaddress = util.get_ip_address("bat0")
             s.bind((ipaddress, 0))
             s.connect((master_address, master_port))
-            # network is in big endian byte order
-            networkOrderMessageLen = (len(reportBytes)).to_bytes(4, byteorder='big')
-            s.sendall(networkOrderMessageLen)
-            s.sendall(reportBytes)
+            channel = ProtoChannel(s)
+            channel.send(reportBytes)
         except ConnectionRefusedError:
             print("Could not connect to master")
         except:
