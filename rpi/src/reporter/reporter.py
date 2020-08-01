@@ -2,7 +2,6 @@ import socket
 import time
 import rpi.src.reporter.scanner as scanner
 import rpi.src.reporter.util as util
-import rpi.src.shared.util as sharedUtil
 from rpi.src.generated.proto.mesh_pb2 import NodeReport
 
 
@@ -30,7 +29,7 @@ def start(id, master_address, master_port, filter_func=None):
             nodeReport.tag_reports.extend(tagReports)
             reportBytes = nodeReport.SerializeToString()
             s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            ipaddress = sharedUtil.get_ip_address("bat0")
+            ipaddress = util.get_ip_address("bat0")
             s.bind((ipaddress, 0))
             s.connect((master_address, master_port))
             # network is in big endian byte order
