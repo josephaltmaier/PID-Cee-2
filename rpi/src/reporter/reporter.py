@@ -30,14 +30,13 @@ def start(id, master_address, master_port, filter_func=None):
             nodeReport.gps_location = gpsLocation
             nodeReport.tag_reports.extend(tagReports)
 
-            reportBytes = nodeReport.SerializeToString()
             s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             #  TODO: This behavior should be encapsulated in the channel
             ipaddress = util.get_ip_address("bat0")
             s.bind((ipaddress, 0))
             s.connect((master_address, master_port))
             channel = ProtoChannel(s)
-            channel.send(reportBytes)
+            channel.send(nodeReport)
         except ConnectionRefusedError:
             print("Could not connect to master")
         except:
