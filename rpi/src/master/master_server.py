@@ -2,6 +2,7 @@ import socket
 import struct
 import fcntl
 import time
+import rpi.src.shared.util as util
 from rpi.src.generated.proto.mesh_pb2 import NodeReport
 
 MASTER_PORT = 17403
@@ -17,8 +18,11 @@ TIMEOUT = 5
 def start():
     serversocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     try:
+        #  TODO: the interface (bat0) and probably the port should be passed in as an argument.  Can also get rid of the
+        #  hard-coded IP address if we add some kind of DNS.service
+        ipaddress = util.get_ip_address("bat0")
         __setIpAddr(serversocket, "bat0", MASTER_ADDRESS)
-        serversocket.bind((socket.gethostname(), MASTER_PORT))
+        serversocket.bind((ipaddress, MASTER_PORT))
         serversocket.listen(5)
 
         while True:
