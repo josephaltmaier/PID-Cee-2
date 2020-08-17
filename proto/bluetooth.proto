@@ -50,7 +50,7 @@ message ResponseContext {
 }
 
 message Location {
-  string gps_location = 1;
+  float gps_location = 1;
 }
 
 message BluetoothConfig {

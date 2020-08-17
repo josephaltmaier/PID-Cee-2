@@ -13,7 +13,7 @@ def __load_gps_location():
     try:
         with open(handlerutil.GPS_LOCATION, "r") as f:
             location = f.read()
-            return location
+            return float(location)
     except FileNotFoundError:
         return None
 

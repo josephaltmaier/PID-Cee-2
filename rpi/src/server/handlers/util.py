@@ -6,7 +6,7 @@ def getLocation():
     location = Location()
     try:
         with open(GPS_LOCATION, "r") as f:
-            location.location = f.read()
+            location.location = float(f.read())
     except:
         pass
     return location
