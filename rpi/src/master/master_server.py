@@ -51,6 +51,12 @@ def __handle_client_sock(sock):
         message = NodeReport()
         message.ParseFromString(messageBytes)
         print(message)
+
+        for tagReport in message.propagation_constant:
+            # distance = 10^((1 meter RSSI - RSSI)/(10*N) where N is a measured propagation constant
+            exponent = (tagReport.power - tagReport.rssi) / (10 * tagReport.propagation_constant)
+            distance = pow(10, exponent)
+            print("distance to %s is %f", (tagReport.address, distance))
     except:
         traceback.print_exc()
     finally:

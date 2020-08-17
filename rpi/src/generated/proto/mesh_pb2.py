@@ -20,7 +20,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   syntax='proto3',
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n\nmesh.proto\x12\nmeshprotos\x1a\x1fgoogle/protobuf/timestamp.proto\"\x89\x01\n\nNodeReport\x12\x0f\n\x07node_id\x18\x01 \x01(\t\x12(\n\x04time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x14\n\x0cgps_location\x18\x03 \x01(\x02\x12*\n\x0btag_reports\x18\x04 \x03(\x0b\x32\x15.meshprotos.TagReport\"z\n\tTagReport\x12\x0e\n\x06tag_id\x18\x01 \x01(\t\x12\r\n\x05major\x18\x02 \x01(\x05\x12\r\n\x05minor\x18\x03 \x01(\x05\x12\r\n\x05power\x18\x04 \x01(\x05\x12\x0c\n\x04rssi\x18\x05 \x01(\x05\x12\x0f\n\x07\x61\x64\x64ress\x18\x06 \x01(\t\x12\x11\n\ttag_state\x18\x07 \x01(\x05\x62\x06proto3'
+  serialized_pb=b'\n\nmesh.proto\x12\nmeshprotos\x1a\x1fgoogle/protobuf/timestamp.proto\"\x89\x01\n\nNodeReport\x12\x0f\n\x07node_id\x18\x01 \x01(\t\x12(\n\x04time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x14\n\x0cgps_location\x18\x03 \x01(\x02\x12*\n\x0btag_reports\x18\x04 \x03(\x0b\x32\x15.meshprotos.TagReport\"\x98\x01\n\tTagReport\x12\x0e\n\x06tag_id\x18\x01 \x01(\t\x12\r\n\x05major\x18\x02 \x01(\x05\x12\r\n\x05minor\x18\x03 \x01(\x05\x12\r\n\x05power\x18\x04 \x01(\x05\x12\x0c\n\x04rssi\x18\x05 \x01(\x05\x12\x0f\n\x07\x61\x64\x64ress\x18\x06 \x01(\t\x12\x11\n\ttag_state\x18\x07 \x01(\x05\x12\x1c\n\x14propagation_constant\x18\x08 \x01(\x05\x62\x06proto3'
   ,
   dependencies=[google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,])
 
@@ -137,6 +137,13 @@ _TAGREPORT = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='propagation_constant', full_name='meshprotos.TagReport.propagation_constant', index=7,
+      number=8, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -149,8 +156,8 @@ _TAGREPORT = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=199,
-  serialized_end=321,
+  serialized_start=200,
+  serialized_end=352,
 )
 
 _NODEREPORT.fields_by_name['time'].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP

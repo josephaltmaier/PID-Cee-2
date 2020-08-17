@@ -16,6 +16,7 @@ def scan(filter_func):
         report.power = data[3]
         report.rssi = data[4]
         report.address = address
+        report.propagation_constant = 2  # TODO: make this tunable or even dynamic.  It depends on the interference between the beacon and the receiver.
         # TODO: figure out how to get a state
         if filter_func is None or filter_func(report):
             tagProtos.append(report)

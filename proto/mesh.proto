@@ -19,4 +19,5 @@ message TagReport {
   int32 rssi = 5; // actual received signal strength
   string address = 6;
   int32 tag_state = 7;
+  int32 propagation_constant = 8;
 }
