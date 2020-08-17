@@ -54,7 +54,7 @@ def __handle_client_sock(sock):
 
         for tagReport in message.tag_reports:
             # distance = 10^((1 meter RSSI - RSSI)/(10*N) where N is a measured propagation constant
-            exponent = (tagReport.power - tagReport.rssi) / (10 * tagReport.propagation_constant)
+            exponent = ((-abs(tagReport.power)) - tagReport.rssi) / (10 * tagReport.propagation_constant)
             distance = pow(10, exponent)
             print("distance to %s is %f" % (tagReport.address, distance))
     except:
